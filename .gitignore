@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+	<title>AngularJS Project</title>
+	<!--connection to angularjs--><script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/angular.js/1.0.3/angular.min.js'></script>
+	<style type="text/css">table
+{
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+
+table td
+{
+    padding: 8px ;
+   background-color: rgb(249,0,70);border-radius: 5px;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;width:100px;background-color:rgb(249,0,70);font-weight:bold;color:white;
+
+}
+
+.boldText { font-weight:bold; }
+	</style>
+	<!--javascript--><script type='text/javascript'>//<![CDATA[ 
+<!--controller-->
+function TaskCtrl($scope)  {
+		$scope.tasks = [
+			{Task: "Painting", Cost: "250", Day: "Monday"},
+			{Task: "Rewiring", Cost: "500", Day: "Tuesday"},
+			{Task: "Cutting", Cost: "100", Day: "Wednesday"}
+		];
+<!--add task-->
+		$scope.addTask = function(task) {
+			$scope.tasks.push(task);
+			$scope.task = {};
+		}
+    <!--calculate total costs-->
+		$scope.totalCost = function(){
+			var total = 0;
+			for(count=0;count<$scope.tasks.length;count++){
+				total += $scope.tasks[count].Cost*1;
+			}
+			return total;
+		}
+		<!--remove task-->
+		$scope.removeTask = function(index){
+			$scope.tasks.splice(index,1);
+		}
+	}
+//]]>  
+
+</script>
+</head>
+<body>
+<div ng-app=""><!--div, attach controller-->
+<div ng-controller="TaskCtrl"><br />
+<!--table-->
+<table border="1">
+	<thead>
+		<tr>
+			<td colspan="4" style="text-align: center;"><span style="font-size:22px;">Task To Do List</span></td>
+		</tr>
+		<tr>
+			<td colspan="2">Search</td>
+			<!--input filter-->
+			<td colspan="2"><input ng-model="filters.name" size="20" type="text" /></td>
+		</tr>
+		<tr>
+			<td>Task</td>
+			<td>Cost</td>
+			<td>Day</td>
+			<td>Remove Task</td>
+		</tr>
+	</thead>
+	<tbody><!--repeat list of tasks, filter-->
+		<tr ng-repeat="task in tasks| filter: filters.name">
+			<td>{{task.Task}}</td>
+			<td>{{task.Cost}}</td>
+			<td>{{task.Day}}</td>
+			<!--remove task-->
+			<td><input ng-click="removeTask($index)" type="button" value="Remove" /></td>
+		</tr>
+		<tr>
+			<td>Total Cost:</td>
+			<td>{{totalCost()}}</td>
+			<td></td>
+			<td></td>
+		</tr>
+	</tbody>
+</table>
+&nbsp;
+
+<table>
+	<tbody>
+		<tr><!--input new task-->
+			<td>Task:</td>
+			<td><input ng-model="task.Task" type="text" /></td>
+		</tr>
+		<tr>
+			<td>Cost:</td>
+			<td><input ng-model="task.Cost" type="text" /></td>
+		</tr>
+		<tr>
+			<td>Day:</td>
+			<td><input ng-model="task.Day" type="text" /></td>
+		</tr>
+		<tr><!--add new task-->
+			<td colspan="2"><input ng-click="addTask(task)" type="Button" value="Add" /></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+</div>
+</body>
+</html>
